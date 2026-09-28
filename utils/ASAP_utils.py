@@ -633,7 +633,11 @@ def load_pretrained_model(
 ):
     "Load pretrained ASAP model"
     model_tr = build_model(params_config, params_model)
-    checkpoint_filepath = best_weight_path + "/best_weights.pth"
+    epochs = [
+        int(f.removeprefix("best_weights-").removesuffix(".pth"))
+        for f in os.listdir(best_weight_path)
+    ]
+    checkpoint_filepath = best_weight_path + f"/best_weights-{max(epochs)}.pth"
     model_tr.load_state_dict(
         torch.load(
             checkpoint_filepath,
