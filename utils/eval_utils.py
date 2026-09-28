@@ -1,7 +1,7 @@
 import numpy as np
 import math
 import scipy.stats as sst
-from pydtw import dtw1d
+from dtaidistance import dtw
 
 
 class EvalUtils:
@@ -44,7 +44,7 @@ class EvalUtils:
 		for t in ts:
 			y_r = np.float64(y_real[t:t+t_len]).copy(order='C')
 			y_p = np.float64(y_pred[t:t+t_len]).copy(order='C')
-			c_mat, dtw_f, align_r, align_p = dtw1d(y_r,y_p)
+			dtw_f = dtw.distance(y_r, y_p)
 			if (not np.isnan(dtw_f)) and (np.abs(dtw_f) != np.inf):
 				dtw_f_tot.append(dtw_f)
 		dtw_f = np.mean(dtw_f_tot) / t_len
